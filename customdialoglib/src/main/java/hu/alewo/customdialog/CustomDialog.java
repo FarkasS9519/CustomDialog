@@ -26,9 +26,18 @@ public class CustomDialog extends Dialog {
     private int content;
     private String stringContent;
     private int icon;
+    private int textColor;
 
     private Button btnOk;
     private Button btnCancel;
+    private int positiveBtnTitle;
+    private String positiveBtnStringTitle;
+    private View.OnClickListener positiveBtnClickListener;
+
+    private int negativeBtnTitle;
+    private String negativeBtnStringTitle;
+    private View.OnClickListener negativeBtnClickListener;
+    private int negativeBtnColor;
 
     public CustomDialog(Context context, @NonNull DialogBuilder dialogBuilder) {
         super(context);
@@ -39,6 +48,7 @@ public class CustomDialog extends Dialog {
         content = dialogBuilder.getContent();
         stringContent = dialogBuilder.getStringContent();
         icon = dialogBuilder.getIcon();
+        textColor = dialogBuilder.getTextColor();
     }
 
     @Override
@@ -63,6 +73,7 @@ public class CustomDialog extends Dialog {
         setupIcon(imgIcon);
         setupTitle(txtTitle);
         setupContent(txtContent);
+        setupButtons();
     }
 
     private void setupIcon(ImageView imgIcon) {
@@ -73,6 +84,7 @@ public class CustomDialog extends Dialog {
     }
 
     private void setupTitle(TextView txtTitle) {
+        txtTitle.setTextColor(textColor);
         if (stringTitle != null) {
             txtTitle.setText(stringTitle);
         } else if (title != 0) {
@@ -81,6 +93,7 @@ public class CustomDialog extends Dialog {
     }
 
     private void setupContent(TextView txtContent) {
+        txtContent.setTextColor(textColor);
         if (content != 0) {
             txtContent.setText(content);
         } else if (stringContent != null) {
@@ -88,35 +101,46 @@ public class CustomDialog extends Dialog {
         }
     }
 
-    public void setupPositiveButton(int btnTitle, @NonNull View.OnClickListener clickListener) {
-        if (btnTitle != 0) {
-            btnOk.setText(btnTitle);
+    private void setupButtons() {
+        if (positiveBtnTitle != 0) {
+            btnOk.setText(positiveBtnTitle);
+        } else if (positiveBtnStringTitle != null) {
+            btnOk.setText(positiveBtnStringTitle);
         }
+        btnOk.setTextColor(textColor);
         btnOk.setBackgroundColor(backgroundColor);
-        btnOk.setOnClickListener(clickListener);
+        btnOk.setOnClickListener(positiveBtnClickListener);
+
+        if ((negativeBtnTitle != 0 || negativeBtnStringTitle != null) && negativeBtnClickListener != null) {
+            btnCancel.setVisibility(View.VISIBLE);
+            if (negativeBtnTitle != 0) {
+                btnCancel.setText(negativeBtnTitle);
+            } else {
+                btnCancel.setText(negativeBtnStringTitle);
+            }
+            btnCancel.setTextColor(textColor);
+            btnCancel.setBackgroundColor(backgroundColor);
+            btnCancel.setOnClickListener(negativeBtnClickListener);
+        }
+    }
+
+    public void setupPositiveButton(int btnTitle, @NonNull View.OnClickListener clickListener) {
+        positiveBtnTitle = btnTitle;
+        positiveBtnClickListener = clickListener;
     }
 
     public void setupPositiveButton(@NonNull String btnTitle, @NonNull View.OnClickListener clickListener) {
-        btnOk.setText(btnTitle);
-        btnOk.setBackgroundColor(backgroundColor);
-        btnOk.setOnClickListener(clickListener);
+        positiveBtnStringTitle = btnTitle;
+        positiveBtnClickListener = clickListener;
     }
 
-    public void setupNegativeButton(int btnTitle, @NonNull View.OnClickListener clickListener, int btnColor) {
-        if (btnTitle != 0) {
-            btnCancel.setText(btnTitle);
-            btnCancel.setVisibility(View.VISIBLE);
-        }
-        btnCancel.setBackgroundColor(btnColor);
-        btnCancel.setOnClickListener(clickListener);
+    public void setupNegativeButton(int btnTitle, @NonNull View.OnClickListener clickListener) {
+        negativeBtnTitle = btnTitle;
+        negativeBtnClickListener = clickListener;
     }
 
-    public void setupNegativeButton(String btnTitle, @NonNull View.OnClickListener clickListener, int btnColor) {
-        if (btnTitle != null) {
-            btnCancel.setText(btnTitle);
-            btnCancel.setVisibility(View.VISIBLE);
-        }
-        btnCancel.setBackgroundColor(btnColor);
-        btnCancel.setOnClickListener(clickListener);
+    public void setupNegativeButton(String btnTitle, @NonNull View.OnClickListener clickListener) {
+        negativeBtnStringTitle = btnTitle;
+        negativeBtnClickListener = clickListener;
     }
 }

@@ -1,7 +1,5 @@
 package hu.alewo.customdialog;
 
-import android.view.View;
-
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
@@ -25,6 +23,7 @@ public class DialogBuilder {
     private String stringTitle;
     private int content;
     private String stringContent;
+    private int textColor;
 
     private int icon;
 }
