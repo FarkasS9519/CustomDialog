@@ -21,28 +21,19 @@ public class CustomDialog extends Dialog {
 
     private int backgroundColor;
     private int buttonLineColor;
-    private int positiveBtnTitle;
-    private String positiveBtnStringTitle;
-    private int negativeBtnTitle;
-    private String negativeBtnStringTitle;
-    private View.OnClickListener positiveBtnListener;
-    private View.OnClickListener negativeBtnListener;
     private int title;
     private String stringTitle;
     private int content;
     private String stringContent;
     private int icon;
 
+    private Button btnOk;
+    private Button btnCancel;
+
     public CustomDialog(Context context, @NonNull DialogBuilder dialogBuilder) {
         super(context);
         backgroundColor = dialogBuilder.getBackgroundColor();
         buttonLineColor = dialogBuilder.getButtonLineColor();
-        positiveBtnTitle = dialogBuilder.getPositiveBtnTitle();
-        positiveBtnStringTitle = dialogBuilder.getPositiveBtnStringTitle();
-        negativeBtnTitle = dialogBuilder.getNegativeBtnTitle();
-        negativeBtnStringTitle = dialogBuilder.getNegativeBtnStringTitle();
-        positiveBtnListener = dialogBuilder.getPositiveBtnListener();
-        negativeBtnListener = dialogBuilder.getNegativeBtnListener();
         title = dialogBuilder.getTitle();
         stringTitle = dialogBuilder.getStringTitle();
         content = dialogBuilder.getContent();
@@ -59,8 +50,8 @@ public class CustomDialog extends Dialog {
         }
 
         ImageView imgIcon = findViewById(R.id.imgIcon);
-        Button btnOk = findViewById(R.id.btnOk);
-        Button btnCancel = findViewById(R.id.btnCancel);
+        btnOk = findViewById(R.id.btnOk);
+        btnCancel = findViewById(R.id.btnCancel);
         TextView txtTitle = findViewById(R.id.txtTitle);
         TextView txtContent = findViewById(R.id.txtContent);
         ConstraintLayout clBackground = findViewById(R.id.clBackground);
@@ -72,8 +63,6 @@ public class CustomDialog extends Dialog {
         setupIcon(imgIcon);
         setupTitle(txtTitle);
         setupContent(txtContent);
-        setupPositiveButton(btnOk);
-        setupNegativeButton(btnCancel);
     }
 
     private void setupIcon(ImageView imgIcon) {
@@ -99,27 +88,35 @@ public class CustomDialog extends Dialog {
         }
     }
 
-    private void setupPositiveButton(Button btnOk) {
-        if (positiveBtnTitle != 0) {
-            btnOk.setText(positiveBtnTitle);
-        } else if (positiveBtnStringTitle != null) {
-            btnOk.setText(positiveBtnStringTitle);
+    public void setupPositiveButton(int btnTitle, @NonNull View.OnClickListener clickListener) {
+        if (btnTitle != 0) {
+            btnOk.setText(btnTitle);
         }
         btnOk.setBackgroundColor(backgroundColor);
-        btnOk.setOnClickListener(positiveBtnListener);
+        btnOk.setOnClickListener(clickListener);
     }
 
-    private void setupNegativeButton(Button btnCancel) {
-        if ((negativeBtnTitle != 0 || negativeBtnStringTitle != null) && negativeBtnListener != null) {
-            btnCancel.setVisibility(View.VISIBLE);
+    public void setupPositiveButton(@NonNull String btnTitle, @NonNull View.OnClickListener clickListener) {
+        btnOk.setText(btnTitle);
+        btnOk.setBackgroundColor(backgroundColor);
+        btnOk.setOnClickListener(clickListener);
+    }
 
-            if (negativeBtnTitle != 0) {
-                btnCancel.setText(negativeBtnTitle);
-            } else {
-                btnCancel.setText(negativeBtnStringTitle);
-            }
-            btnCancel.setBackgroundColor(backgroundColor);
-            btnCancel.setOnClickListener(negativeBtnListener);
+    public void setupNegativeButton(int btnTitle, @NonNull View.OnClickListener clickListener, int btnColor) {
+        if (btnTitle != 0) {
+            btnCancel.setText(btnTitle);
+            btnCancel.setVisibility(View.VISIBLE);
         }
+        btnCancel.setBackgroundColor(btnColor);
+        btnCancel.setOnClickListener(clickListener);
+    }
+
+    public void setupNegativeButton(String btnTitle, @NonNull View.OnClickListener clickListener, int btnColor) {
+        if (btnTitle != null) {
+            btnCancel.setText(btnTitle);
+            btnCancel.setVisibility(View.VISIBLE);
+        }
+        btnCancel.setBackgroundColor(btnColor);
+        btnCancel.setOnClickListener(clickListener);
     }
 }

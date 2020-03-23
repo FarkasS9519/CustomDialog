@@ -21,13 +21,6 @@ public class DialogBuilder {
     @NonNull
     private int buttonLineColor;
 
-    private int positiveBtnTitle;
-    private String positiveBtnStringTitle;
-    private int negativeBtnTitle;
-    private String negativeBtnStringTitle;
-    private View.OnClickListener positiveBtnListener;
-    private View.OnClickListener negativeBtnListener;
-
     private int title;
     private String stringTitle;
     private int content;
